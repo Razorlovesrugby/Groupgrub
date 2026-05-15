@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
-import { supabase } from '@/lib/supabase'
+import { supabase, isConfigured } from '@/lib/supabase'
 import { getStoredParticipant } from '@/lib/utils'
 import type { Session, Participant, Idea, Vote, IdeaWithVotes } from '@/types'
 import type { StoredParticipant } from '@/lib/utils'
@@ -14,6 +14,20 @@ interface Props {
 }
 
 export default function SessionPage({ code }: Props) {
+  if (!isConfigured) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center gap-4">
+        <div className="text-5xl">⚙️</div>
+        <h2 className="text-2xl font-bold">Setup Required</h2>
+        <p className="text-white/50 max-w-sm text-sm">
+          Supabase environment variables are missing.<br />
+          Set <code className="text-indigo-400">NEXT_PUBLIC_SUPABASE_URL</code> and{' '}
+          <code className="text-indigo-400">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> in Vercel, then redeploy.
+        </p>
+        <a href="/" className="btn-secondary mt-2">Home</a>
+      </div>
+    )
+  }
   const [session, setSession] = useState<Session | null>(null)
   const [participants, setParticipants] = useState<Participant[]>([])
   const [ideas, setIdeas] = useState<Idea[]>([])
