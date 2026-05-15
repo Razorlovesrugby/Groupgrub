@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { supabase, isConfigured } from '@/lib/supabase'
 import { generateSessionCode, generateParticipantId, storeParticipant } from '@/lib/utils'
 
 export default function LandingPage() {
@@ -57,6 +57,20 @@ export default function LandingPage() {
       return
     }
     router.push(`/session/${code}`)
+  }
+
+  if (!isConfigured) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center gap-4">
+        <div className="text-5xl">⚙️</div>
+        <h2 className="text-2xl font-bold">Setup Required</h2>
+        <p className="text-white/50 max-w-sm">
+          Supabase environment variables are missing.<br />
+          Add <code className="text-indigo-400">NEXT_PUBLIC_SUPABASE_URL</code> and{' '}
+          <code className="text-indigo-400">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to your Vercel project and redeploy.
+        </p>
+      </div>
+    )
   }
 
   return (
