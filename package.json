@@ -1,6 +1,7 @@
 {
   "name": "groupgrub",
   "version": "0.1.0",
+  "description": "Real-time group food decision app with anonymous voting.",
   "private": true,
   "scripts": {
     "dev": "next dev",
